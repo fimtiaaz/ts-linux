@@ -1,13 +1,17 @@
 SSH Troubleshooting
+
+1) #Check SSH Service on Server
 ```bash
-1)  sudo systemctl status sshd        # Check SSH Service on Server
+sudo systemctl status sshd        
 ```
 ```bash
     sudo systemctl start sshd         # If not active, start it:
     sudo systemctl enable sshd
 ```
-```bash
-2)  ping <server_ip>                 # From the client machine, test basic connectivity:
+
+2)  # From the client machine, test basic connectivity:
+```bash	
+	ping <server_ip>                 
     telnet <server_ip> 22
 ```
 3)  Check for Authentication Issues
@@ -20,7 +24,8 @@ SSH Troubleshooting
         chmod 600 ~/.ssh/authorized_keys
 
 4)  Check if user exists on server
-    id <username>
+```bash    
+	id <username>
 
     If not found:
         sudo useradd -m -s /bin/bash <username>
@@ -28,7 +33,7 @@ SSH Troubleshooting
     
     To add the user to a group (e.g., 'developers'):
         sudo usermod -aG developers <username>
-
+```
 5)  Check /etc/ssh/sshd_config for:
         PermitRootLogin yes/no
         PasswordAuthentication yes
@@ -38,22 +43,28 @@ SSH Troubleshooting
         sudo systemctl restart sshd
 
 6)  Check Firewall settings (server-side)
-    sudo firewall-cmd --list-all
-
+```bash    
+	sudo firewall-cmd --list-all
+```
     To allow port 22:
+```bash
         sudo firewall-cmd --add-port=22/tcp --permanent
         sudo firewall-cmd --reload
-
+```
 7)  Check SSH logs on server
-    sudo journalctl -xe | grep sshd
+```bash    
+	sudo journalctl -xe | grep sshd
     sudo tail -f /var/log/secure
-
+```
 8)  Optional: SELinux (if enabled)
-    sudo sestatus
-
+```bash    
+	sudo sestatus
+```
     Temporarily disable for testing:
-        sudo setenforce 0
-
+```bash
+		sudo setenforce 0
+```
 9)  Permissions on user’s home directory:
-        chmod 755 /home/<username>
-
+```bash
+		chmod 755 /home/<username>
+```

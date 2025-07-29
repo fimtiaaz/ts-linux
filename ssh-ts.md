@@ -27,7 +27,7 @@ chmod 600 ~/.ssh/authorized_keys
 4)Check if user exists on server
 ```bash    
 id <username>
-
+```
 If not found:
 ```bash
 sudo useradd -m -s /bin/bash <username>

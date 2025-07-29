@@ -1,13 +1,15 @@
 SSH Troubleshooting
-
+```bash
 1)  sudo systemctl status sshd        # Check SSH Service on Server
-
+```
+```bash
     sudo systemctl start sshd         # If not active, start it:
     sudo systemctl enable sshd
-
+```
+```bash
 2)  ping <server_ip>                 # From the client machine, test basic connectivity:
     telnet <server_ip> 22
-
+```
 3)  Check for Authentication Issues
     Client private key: ~/.ssh/id_rsa
 

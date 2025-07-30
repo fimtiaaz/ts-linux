@@ -1,8 +1,14 @@
 # Disk Troubleshooting Guide for RHEL Systems
+This document outlines common disk-related problems you might encounter on Red Hat Enterprise Linux (RHEL) 
+servers, along with practical steps to identify and resolve them. ---
 ## Table of Contents
-1. Disk Not Detected 2. Partition Table Issues 3. Mount Failures 4. Disk Full or Out of Inodes 5. Filesystem 
-Corruption 6. LVM Issues 7. Disk I/O Performance Degradation 8. Filesystem Resize Problems 9. Permissions and 
-Ownership Issues 10. Boot Failures Due to Disk Problems ---
+1. [Disk Not Detected](#1-disk-not-detected) 2. [Partition Table Issues](#2-partition-table-issues) 3. [Mount 
+Failures](#3-mount-failures) 4. [Disk Full or Out of Inodes](#4-disk-full-or-out-of-inodes) 5. [Filesystem 
+Corruption](#5-filesystem-corruption) 6. [LVM Issues](#6-lvm-issues) 7. [Disk I/O Performance 
+Degradation](#7-disk-io-performance-degradation) 8. [Filesystem Resize 
+Problems](#8-filesystem-resize-problems) 9. [Permissions and Ownership 
+Issues](#9-permissions-and-ownership-issues) 10. [Boot Failures Due to Disk 
+Problems](#10-boot-failures-due-to-disk-problems) ---
 ## 1. Disk Not Detected
 **Problem:** Newly attached disk is not visible to the operating system. **Solution:** ```bash
 # Scan for new disks manually
@@ -65,16 +71,15 @@ smartctl -a /dev/sdX
 cat /sys/block/sdX/queue/scheduler echo mq-deadline > /sys/block/sdX/queue/scheduler ``` ---
 ## 8. Filesystem Resize Problems
 **Problem:** You resized a disk or volume, but the filesystem doesn't reflect the new space. **Solution:** 
-For ext4 filesystems: ```bash resize2fs /dev/mapper/vgname-lvname ``` For XFS filesystems: ```bash xfs_growfs 
-/mountpoint ``` ---
+For ext4: ```bash resize2fs /dev/mapper/vgname-lvname ``` For XFS: ```bash xfs_growfs /mountpoint ``` ---
 ## 9. Permissions and Ownership Issues
 **Problem:** Users cannot read or write to the mounted disk. **Solution:** ```bash
 # Adjust ownership and permissions
 chown user:group /mountpoint chmod 755 /mountpoint
-# Review permissions using ls
+# Review permissions
 ls -l /mountpoint ``` ---
 ## 10. Boot Failures Due to Disk Problems
-**Problem:** The system fails to boot because of incorrect entries in `/etc/fstab` or missing disks. 
+**Problem:** The system fails to boot because of incorrect entries in /etc/fstab or missing disks. 
 **Solution:** ```bash
 # Boot into rescue mode or use recovery shell Remount the root filesystem in read-write mode
 mount -o remount,rw /
@@ -83,13 +88,12 @@ nano /etc/fstab
 # Reboot after fixing configuration
 ``` ---
 ## Common Tools and Commands
-| Command | Description | ---------------|-------------------------------------| `lsblk` | Lists block 
-| devices | `blkid` | Shows UUID and filesystem types | `fdisk`, `parted` | Disk partitioning utilities | 
-| `df`, `du` | Disk usage reporting | `fsck` | Filesystem check and repair | `lvs`, `vgs`, `pvs` | LVM 
-| management tools | `iostat`, `iotop`, `dstat` | I/O monitoring tools | `smartctl` | Disk health monitoring 
-| (SMART) |
+| Command | Description | ---------------|-------------------------------------| lsblk | Lists block devices 
+| |
+| blkid | Shows UUID and filesystem types | fdisk, parted | Disk partitioning utilities | df, du | Disk usage 
+| reporting | fsck | Filesystem check and repair | lvs, vgs, pvs | LVM management tools | iostat, iotop, 
+| dstat | I/O monitoring tools | smartctl | Disk health monitoring (SMART) |
 ---
 ## Best Practices
-- Always use UUIDs in `/etc/fstab` to avoid device name issues. - Set up disk usage monitoring and alerts. - 
-Use LVM for flexible storage and snapshots. - Clean up unnecessary logs and temp files periodically. - 
-Perform regular backups of critical filesystems.
+- Use UUIDs in `/etc/fstab` instead of device names to avoid mapping issues. - Set up disk usage alerts and 
+logs. - Use LVM for flexible disk management and snapshots. - Clean logs regularly and automate backups.

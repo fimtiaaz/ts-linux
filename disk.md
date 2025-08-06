@@ -27,7 +27,6 @@ for host in /sys/class/scsi_host/host*; do
 # Check visibility
 lsblk fdisk -l 
 ``` 
-
 ### 2) Partition Table Issues
 ```bash
 
